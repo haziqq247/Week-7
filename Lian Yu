@@ -1,0 +1,5 @@
+Week 6 Lian Yu TryHackMe
+
+Step 1: Reconnaissance
+
+nmap -sC -sV 10.48.165.77
