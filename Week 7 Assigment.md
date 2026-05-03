@@ -40,7 +40,7 @@ Paste the link into google
 
 Question 3: Interpret an Nmap Output
 
-1. What can an attacker do with each port?
+1.What can an attacker do with each port?
 Port 21 (FTP – vsftpd 2.3.4)
 Attempt anonymous login or brute-force credentials
 Upload/download files
@@ -64,7 +64,7 @@ Access shared folders
 Attempt authentication attacks
 Exploit SMB vulnerabilities
 
-2. What vulnerabilities are likely present based on the version?
+2.What vulnerabilities are likely present based on the version?
 
 FTP – vsftpd 2.3.4
 Known backdoor vulnerability.
@@ -84,8 +84,78 @@ End-of-life OS
 Vulnerable to EternalBlue.
 Wormable attacks (e.g., WannaCry)
 
-4. Which one is the highest risk and why?
-5. What attack path can be built from this?
-6. What should be the remediation?
+3.Which one is the highest risk and why?
+
+
+Port 445 (SMB – Windows 7) is the highest risk because of known critical exploit (EternalBlue) and no authentication needed in some cases
+
+4.What attack path can be built from this?
+
+
+Start with Port 80 (web) → gather info / find entry point
+
+Use Port 21 (FTP) → exploit vsftpd backdoor → get initial shell. 
+
+Move laterally using Port 139/445 (SMB) → enumerate shares
+
+Exploit EternalBlue on Port 445 → gain full system access
+
+Maintain access via SSH (Port 22) if credentials found
+
+5.What should be the remediation?
+
+Disable or update vsftpd 2.3.4 (remove backdoor risk) and upgrade OpenSSH to latest version
+
+Question 4: Identify the OS (OS Fingerprinting) - TTL
+
+Image 1
+
+<img width="628" height="223" alt="image" src="https://github.com/user-attachments/assets/af9d847b-f38c-4a52-8835-0526986e4e55" />
+
+It showing a ttl value, that shows the packet is still at its initial value, meaning it stayed within the local machine and did not travel across any network devices
+
+Image 2
+
+<img width="346" height="237" alt="image" src="https://github.com/user-attachments/assets/b6ef1de4-a95d-418f-badb-ce87ec749f94" />
+
+TTL here is 255, which means the packet started with a maximum TTL value and has not passed through many routers yet
+
+Image 3
+
+<img width="643" height="141" alt="image" src="https://github.com/user-attachments/assets/b92d8858-49dd-4a1b-b0d1-228b037f1c64" />
+
+This output shows that your computer is sending ICMP echo requests (ping) to the IP address 192.168.122.239 and receiving replies successfully.
+
+Question 5: Analyse the Nessus file
+Upload to your nessus (Network_Scan.nessus) and analyse the files. Focus on critical or high findings that was identifies in analysis named “Ghostcat”.
+
+<img width="1319" height="511" alt="image" src="https://github.com/user-attachments/assets/a520a95d-fc5d-4304-9817-4578a6074b1d" />
+
+1.What is the affected Port number
+
+<img width="276" height="57" alt="image" src="https://github.com/user-attachments/assets/1c1c9860-bd74-4cf8-8103-60e7f6946966" />
+
+2.What is the Affected protocol
+
+Apache Tomcat AJP
+
+3.What is the CVSS Score of vulnerability found
+
+<img width="323" height="85" alt="image" src="https://github.com/user-attachments/assets/7a43ad44-0b5f-4ed8-a22e-60a3a7cb6ca2" />
+
+4.Can you find any exploit related to this vulnerability? 
+
+Yes, there are public exploits available for Ghostcat (CVE-2020-1938) that allow attackers to read sensitive files and potentially achieve remote code execution via the AJP port
+
+5.Find CVE for this vulnerability.
+CVE:  CVE-2020-1938, CVE-2020-1745
+
+
+
+
+
+
+
+
 
 
