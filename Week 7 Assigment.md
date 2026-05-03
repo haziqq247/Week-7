@@ -148,6 +148,7 @@ Apache Tomcat AJP
 Yes, there are public exploits available for Ghostcat (CVE-2020-1938) that allow attackers to read sensitive files and potentially achieve remote code execution via the AJP port
 
 5.Find CVE for this vulnerability.
+
 CVE:  CVE-2020-1938, CVE-2020-1745
 
 
